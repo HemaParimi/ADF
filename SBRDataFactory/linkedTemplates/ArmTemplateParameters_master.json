@@ -5,6 +5,9 @@
 		"factoryName": {
 			"value": "SBRDataFactory"
 		},
+		"LS_AzureBlobStorage_connectionString": {
+			"value": ""
+		},
 		"containerUri": {
 			"value": ""
 		},
