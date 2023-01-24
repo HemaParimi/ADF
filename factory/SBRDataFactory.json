@@ -1,0 +1,9 @@
+{
+	"name": "SBRDataFactory",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "6ac6572b-3bd2-4b04-b717-e70bdc0c662c",
+		"tenantId": "585ca061-32d2-4650-9e27-ceaaad30852f"
+	}
+}
