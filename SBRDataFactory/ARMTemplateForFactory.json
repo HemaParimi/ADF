@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'LS_AzureBlobStorage'"
 		},
+		"Trigger_aeh_properties_CopyPipeline_aeh_parameters_windowStart": {
+			"type": "string",
+			"defaultValue": "@trigger().scheduledTime"
+		},
 		"Trigger_hm6_properties_CopyPipeline_YYYYMMDD_parameters_windowStart": {
 			"type": "string",
 			"defaultValue": "1/24/2023, 11:25:00 AM"
@@ -108,13 +112,13 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/CopyPipeline_l4c')]",
+			"name": "[concat(parameters('factoryName'), '/CopyPipeline_aeh')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Copy_l4c",
+						"name": "Copy_aeh",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -131,7 +135,7 @@
 							},
 							{
 								"name": "Destination",
-								"value": "sbrtest/{year}/{month}/{day}/"
+								"value": "sbrtest/@{formatDateTime(pipeline().parameters.windowStart,'yyyy')}/@{formatDateTime(pipeline().parameters.windowStart,'MM')}/@{formatDateTime(pipeline().parameters.windowStart,'dd')}/"
 							}
 						],
 						"typeProperties": {
@@ -162,16 +166,18 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "SourceDataset_l4c",
+								"referenceName": "SourceDataset_aeh",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						],
 						"outputs": [
 							{
-								"referenceName": "DestinationDataset_l4c",
+								"referenceName": "DestinationDataset_aeh",
 								"type": "DatasetReference",
-								"parameters": {}
+								"parameters": {
+									"cw_folderPath": "@{formatDateTime(pipeline().parameters.windowStart,'yyyy')}/@{formatDateTime(pipeline().parameters.windowStart,'MM')}/@{formatDateTime(pipeline().parameters.windowStart,'dd')}"
+								}
 							}
 						]
 					}
@@ -180,11 +186,16 @@
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
 				},
+				"parameters": {
+					"windowStart": {
+						"type": "String"
+					}
+				},
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/SourceDataset_l4c')]",
-				"[concat(variables('factoryId'), '/datasets/DestinationDataset_l4c')]"
+				"[concat(variables('factoryId'), '/datasets/SourceDataset_aeh')]",
+				"[concat(variables('factoryId'), '/datasets/DestinationDataset_aeh')]"
 			]
 		},
 		{
@@ -210,6 +221,37 @@
 				"annotations": []
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DestinationDataset_aeh')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureBlobStorage",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"cw_folderPath": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": {
+							"value": "@dataset().cw_folderPath",
+							"type": "Expression"
+						},
+						"container": "sbrtest"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_AzureBlobStorage')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/DestinationDataset_hm6')]",
@@ -257,6 +299,29 @@
 					"location": {
 						"type": "AzureBlobStorageLocation",
 						"folderPath": "{year}/{month}/{day}",
+						"container": "sbrtest"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_AzureBlobStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SourceDataset_aeh')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureBlobStorage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "Input",
 						"container": "sbrtest"
 					}
 				}
@@ -323,6 +388,41 @@
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Trigger_aeh')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "CopyPipeline_aeh",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"windowStart": {
+								"type": "Expression",
+								"value": "[parameters('Trigger_aeh_properties_CopyPipeline_aeh_parameters_windowStart')]"
+							}
+						}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Minute",
+						"interval": 5,
+						"startTime": "2023-01-24T11:59:00Z",
+						"timeZone": "UTC"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/CopyPipeline_aeh')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Trigger_hm6')]",

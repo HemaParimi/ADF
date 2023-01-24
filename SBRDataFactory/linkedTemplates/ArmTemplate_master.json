@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'LS_AzureBlobStorage'"
 		},
+		"Trigger_aeh_properties_CopyPipeline_aeh_parameters_windowStart": {
+			"type": "string",
+			"defaultValue": "@trigger().scheduledTime"
+		},
 		"Trigger_hm6_properties_CopyPipeline_YYYYMMDD_parameters_windowStart": {
 			"type": "string",
 			"defaultValue": "1/24/2023, 11:25:00 AM"
@@ -44,6 +48,9 @@
 					},
 					"LS_AzureBlobStorage_connectionString": {
 						"value": "[parameters('LS_AzureBlobStorage_connectionString')]"
+					},
+					"Trigger_aeh_properties_CopyPipeline_aeh_parameters_windowStart": {
+						"value": "[parameters('Trigger_aeh_properties_CopyPipeline_aeh_parameters_windowStart')]"
 					},
 					"Trigger_hm6_properties_CopyPipeline_YYYYMMDD_parameters_windowStart": {
 						"value": "[parameters('Trigger_hm6_properties_CopyPipeline_YYYYMMDD_parameters_windowStart')]"

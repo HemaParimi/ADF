@@ -8,6 +8,9 @@
 		"LS_AzureBlobStorage_connectionString": {
 			"value": ""
 		},
+		"Trigger_aeh_properties_CopyPipeline_aeh_parameters_windowStart": {
+			"value": "@trigger().scheduledTime"
+		},
 		"Trigger_hm6_properties_CopyPipeline_YYYYMMDD_parameters_windowStart": {
 			"value": "1/24/2023, 11:25:00 AM"
 		},
