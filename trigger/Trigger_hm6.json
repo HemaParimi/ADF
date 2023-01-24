@@ -1,0 +1,31 @@
+{
+	"name": "Trigger_hm6",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "CopyPipeline_YYYYMMDD",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"windowStart": {
+						"type": "Expression",
+						"value": "@trigger().scheduledTime"
+					}
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Minute",
+				"interval": 5,
+				"startTime": "2023-01-24T11:09:00Z",
+				"endTime": "2023-01-24T11:20:00Z",
+				"timeZone": "UTC"
+			}
+		}
+	}
+}
