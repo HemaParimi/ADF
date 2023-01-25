@@ -3,17 +3,7 @@
 	"properties": {
 		"annotations": [],
 		"runtimeState": "Started",
-		"pipelines": [
-			{
-				"pipelineReference": {
-					"referenceName": "CopyPipeline_YYYYMMDD",
-					"type": "PipelineReference"
-				},
-				"parameters": {
-					"windowStart": "1/24/2023, 11:25:00 AM"
-				}
-			}
-		],
+		"pipelines": [],
 		"type": "ScheduleTrigger",
 		"typeProperties": {
 			"recurrence": {
