@@ -1,12 +1,15 @@
 {
-	"name": "DS_SBRTest",
+	"name": "DS_SBRDev",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "LS_AzureBlobStorage",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"SourceDP": {
+			"DestinationDirDP": {
+				"type": "string"
+			},
+			"DestinationFileDP": {
 				"type": "string"
 			}
 		},
@@ -16,39 +19,20 @@
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": {
-					"value": "@dataset().SourceDP",
+					"value": "@dataset().DestinationFileDP",
 					"type": "Expression"
 				},
-				"folderPath": "Input",
-				"container": "sbrtest"
+				"folderPath": {
+					"value": "@dataset().DestinationDirDP",
+					"type": "Expression"
+				},
+				"container": "sbrdev"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
-		"schema": [
-			{
-				"type": "String"
-			},
-			{
-				"type": "String"
-			},
-			{
-				"type": "String"
-			},
-			{
-				"type": "String"
-			},
-			{
-				"type": "String"
-			},
-			{
-				"type": "String"
-			},
-			{
-				"type": "String"
-			}
-		]
+		"schema": []
 	}
 }
