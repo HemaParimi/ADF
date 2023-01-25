@@ -24,6 +24,7 @@
 					],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
 						"enablePartitionDiscovery": false
 					},
 					"formatSettings": {
@@ -77,6 +78,7 @@
 								],
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
 									"modifiedDatetimeEnd": "2023-01-25T00:00:00.000Z",
 									"enablePartitionDiscovery": false
 								},
@@ -168,8 +170,34 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "Capture Error ",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "ForEach1",
+						"dependencyConditions": [
+							"Failed",
+							"Skipped"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Error",
+					"value": {
+						"value": "@concat(activity('Get Metadata1').Error?.message,'|',activity('Get LatestModified file').Error?.message,'|',activity('Copy data1').Error?.message)",
+						"type": "Expression"
+					}
+				}
 			}
 		],
+		"variables": {
+			"Error": {
+				"type": "String"
+			}
+		},
 		"annotations": []
 	}
 }
