@@ -38,7 +38,7 @@
 				"     ignoreNoFilesFound: false) ~> source1",
 				"source1 pivot(groupBy(Asset_ID),",
 				"     pivotBy(Property_Name),",
-				"     Property = max(Property_Value),",
+				"     Property = min(Property_Value),",
 				"     columnNaming: '$N$V',",
 				"     lateral: true) ~> pivot1",
 				"pivot1 sink(allowSchemaDrift: true,",
