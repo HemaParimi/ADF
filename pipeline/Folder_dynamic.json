@@ -79,7 +79,7 @@
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
 									"recursive": true,
-									"modifiedDatetimeEnd": "2023-01-25T00:00:00.000Z",
+									"modifiedDatetimeEnd": "2023-01-25T00:00:00Z",
 									"enablePartitionDiscovery": false
 								},
 								"formatSettings": {
@@ -198,6 +198,8 @@
 				"type": "String"
 			}
 		},
-		"annotations": []
-	}
+		"annotations": [],
+		"lastPublishTime": "2023-01-27T14:29:44Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
 }
