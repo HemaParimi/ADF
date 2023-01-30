@@ -36,7 +36,8 @@
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
 				},
-				"annotations": []
+				"annotations": [],
+				"lastPublishTime": "2023-01-24T08:04:43Z"
 			},
 			"dependsOn": []
 		},
@@ -76,7 +77,8 @@
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
 				},
-				"annotations": []
+				"annotations": [],
+				"lastPublishTime": "2023-01-25T13:35:25Z"
 			},
 			"dependsOn": []
 		},
@@ -408,7 +410,7 @@
 										"storeSettings": {
 											"type": "AzureBlobStorageReadSettings",
 											"recursive": true,
-											"modifiedDatetimeEnd": "2023-01-25T00:00:00.000Z",
+											"modifiedDatetimeEnd": "2023-01-25T00:00:00Z",
 											"enablePartitionDiscovery": false
 										},
 										"formatSettings": {
@@ -531,7 +533,8 @@
 						"type": "String"
 					}
 				},
-				"annotations": []
+				"annotations": [],
+				"lastPublishTime": "2023-01-27T14:29:44Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/DS_SBRTest_Source')]",
@@ -586,8 +589,10 @@
 						"     lateral: true) ~> pivot1",
 						"pivot1 sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
+						"     partitionFileNames:['Test_Pivot'],",
 						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> sink1"
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> sink1"
 					]
 				}
 			},
@@ -637,7 +642,8 @@
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
 				},
-				"annotations": []
+				"annotations": [],
+				"lastPublishTime": "2023-01-27T14:29:45Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/dataflows/Test_DF_Pivot')]"
